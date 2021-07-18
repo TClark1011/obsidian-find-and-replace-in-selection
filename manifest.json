@@ -1,10 +1,10 @@
 {
-	"id": "obsidian-find-and-replace-in-selection",
-	"name": "Find & Replace in Selection",
-	"version": "1.0.0",
-	"minAppVersion": "1.0.0",
-	"description": "Replace text within your current selection.",
-	"author": "Thomas Clark",
-	"authorUrl": "https://thomasclark.io/",
-	"isDesktopOnly": false
+    "author": "Thomas Clark",
+    "authorUrl": "https://thomasclark.io/",
+    "description": "Replace text within your current selection.",
+    "id": "obsidian-find-and-replace-in-selection",
+    "isDesktopOnly": false,
+    "minAppVersion": "0.9.12",
+    "name": "Find & Replace in Selection",
+    "version": "1.0.0"
 }
