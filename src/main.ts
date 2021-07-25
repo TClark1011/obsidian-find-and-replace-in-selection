@@ -5,68 +5,30 @@ import {
 	Modal,
 	Notice,
 	Plugin,
-	PluginSettingTab,
-	Setting,
 	TextComponent,
-	EditorPosition,
 } from "obsidian";
 import escapeStringRegexp from "escape-string-regexp";
 
-interface MyPluginSettings {
-	mySetting: string;
-}
-
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: "default",
-};
-
 export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
 
 	async onload() {
 		console.log("loading plugin");
 
-		await this.loadSettings();
 
 		this.addCommand({
 			id: "find-and-replace-in-selection",
 			name: "Find And Replace",
-			editorCheckCallback: (checking: boolean, editor) => {
-				let leaf = this.app.workspace.activeLeaf;
-				if (leaf) {
-					if (!checking) {
-						new FindAndReplaceModal(this.app, editor).open();
-					}
-					return true;
-				}
-				return false;
-			},
+			editorCallback: (editor) => {
+				new FindAndReplaceModal(this.app, editor).open();
+			}
 		});
 
-		this.registerCodeMirror((cm: CodeMirror.Editor) => {
-			console.log("codemirror", cm);
-		});
-
-		this.registerDomEvent(document, "click", (evt: MouseEvent) => {
-			console.log("click", evt);
-		});
-
-		this.registerInterval(
-			window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000),
-		);
 	}
 
 	onunload() {
 		console.log("unloading plugin");
 	}
 
-	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
-
-	async saveSettings() {
-		await this.saveData(this.settings);
-	}
 }
 
 class FindAndReplaceModal extends Modal {

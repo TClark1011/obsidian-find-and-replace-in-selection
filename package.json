@@ -2,7 +2,7 @@
 	"name": "obsidian-find-replace-in-selection",
 	"version": "1.0.1",
 	"description": "A plugin for Obsidian MD that lets you replace text within your current selection.",
-	"main": "main.js",
+	"main": "build/main.js",
 	"scripts": {
 		"dev": "rollup --config rollup.config.js -w",
 		"build": "rollup --config rollup.config.js --environment BUILD:production"
