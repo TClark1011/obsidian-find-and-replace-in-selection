@@ -9,26 +9,24 @@ import {
 } from "obsidian";
 import escapeStringRegexp from "escape-string-regexp";
 
-export default class MyPlugin extends Plugin {
+const newLineRegex = /(?:\n)/g;
 
+export default class MyPlugin extends Plugin {
 	async onload() {
 		console.log("loading plugin");
-
 
 		this.addCommand({
 			id: "find-and-replace-in-selection",
 			name: "Find And Replace",
 			editorCallback: (editor) => {
 				new FindAndReplaceModal(this.app, editor).open();
-			}
+			},
 		});
-
 	}
 
 	onunload() {
 		console.log("unloading plugin");
 	}
-
 }
 
 class FindAndReplaceModal extends Modal {
@@ -90,25 +88,32 @@ class FindAndReplaceModal extends Modal {
 				escapeStringRegexp(findInputComponent.getValue()),
 				"g",
 			);
-			const count = (editor.getSelection().match(search) || []).length;
 
-			const replacementText =
-				count > 0
-					? editor
-							.getSelection()
-							.replace(search, replaceWithInputComponent.getValue())
-					: editor.getSelection();
+			// We make the special new line characters visible by escaping the '\' such that the '\n' will be detected
+			const cleanedSelection = editor
+				.getSelection()
+				.replace(newLineRegex, "\\n");
+			const count = (cleanedSelection.match(search) || []).length;
 
-			const selectionStart = editor.getCursor("from");
+			if (count > 0) {
+				const replacementText = cleanedSelection.replace(
+								search,
+								replaceWithInputComponent.getValue(),
+						  ).replace("\\n", "\n")
+							// We convert any un-replaced new line characters back to their original state
 
-			editor.replaceSelection(replacementText);
+				const selectionStart = editor.getCursor("from");
 
-			editor.setSelection(
-				selectionStart,
-				editor.offsetToPos(
-					editor.posToOffset(selectionStart) + replacementText.length,
-				),
-			);
+				editor.replaceSelection(replacementText);
+
+				// We re-select the selected text (just for nicer user experience)
+				editor.setSelection(
+					selectionStart,
+					editor.offsetToPos(
+						editor.posToOffset(selectionStart) + replacementText.length,
+					),
+				);
+			}
 			this.close();
 			new Notice(`Made ${count} replacements`);
 		});

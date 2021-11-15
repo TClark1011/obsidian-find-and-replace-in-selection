@@ -6,3 +6,5 @@ A plugin for finding and replacing text in your selection inside the Obsidian MD
 1. Enter the text you want to be replaced
 1. Enter the text you want to be inserted
 1. Press the "Replace All" button
+
+**Line Breaks:** You can replace line breaks by using '\n' when writing out the text you want to be replaced.

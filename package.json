@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-find-replace-in-selection",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"description": "A plugin for Obsidian MD that lets you replace text within your current selection.",
 	"main": "build/main.js",
 	"scripts": {
